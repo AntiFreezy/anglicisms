@@ -2,7 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const dictionaryContainer = document.getElementById('dictionaryContainer');
     const searchInput = document.getElementById('searchInput');
     const loadingMessage = document.querySelector('.loading-message');
-    let dictionaryData = []; // Массив для хранения данных словаря
+    let dictionaryData = []; // Массив для хранения ВСЕХ данных словаря
+    let currentFilteredData = []; // Массив для хранения отфильтрованных/отсортированных данных
 
     // --- Функция для отображения словарных статей ---
     function renderDictionary(data) {
@@ -13,15 +14,35 @@ document.addEventListener('DOMContentLoaded', () => {
              return;
         }
 
+        let currentPeriod = null; // Для отслеживания смены периода
+        const periodHeadings = { // Названия для заголовков периодов
+            "старое": "Устоявшиеся / Ранние (до ~сер. XX в.)",
+            "среднее": "XX Век (~сер. XX в. - 1990-е)",
+            "новое": "Современные (1990-е - наши дни)"
+        };
+
         data.forEach(entry => {
+             // --- Добавление заголовка периода при смене ---
+             if (entry.period && entry.period !== currentPeriod) {
+                currentPeriod = entry.period;
+                const heading = document.createElement('h2');
+                heading.classList.add('period-heading'); // Добавляем класс для стилей
+                // Используем название из periodHeadings или само значение period, если его нет в объекте
+                heading.textContent = periodHeadings[currentPeriod] || currentPeriod;
+                dictionaryContainer.appendChild(heading);
+            }
+             // --- Конец добавления заголовка ---
+
             const entryDiv = document.createElement('div');
             entryDiv.classList.add('entry');
+            // Добавляем класс периода для возможной доп. стилизации или фильтрации
+            entryDiv.classList.add(`period-${entry.period || 'unknown'}`);
 
             // Заголовок (русский термин)
-            const termRu = document.createElement('h2');
-            termRu.classList.add('term-ru');
-            termRu.textContent = entry.term_ru;
-            entryDiv.appendChild(termRu);
+            const termRuH3 = document.createElement('h3'); // Используем H3 для термина внутри блока
+            termRuH3.classList.add('term-ru');
+            termRuH3.textContent = entry.term_ru;
+            entryDiv.appendChild(termRuH3);
 
             // Английский термин
             const termEn = document.createElement('span');
@@ -41,14 +62,12 @@ document.addEventListener('DOMContentLoaded', () => {
             // Определение
             const definition = document.createElement('p');
             definition.classList.add('definition');
-            // Используем innerHTML для жирного шрифта у "Толкование:"
             definition.innerHTML = `<strong>Толкование:</strong> ${entry.definition}`;
             entryDiv.appendChild(definition);
 
             // Пример
             const example = document.createElement('p');
             example.classList.add('example');
-             // Используем innerHTML для жирного шрифта у "Пример:"
              example.innerHTML = `<strong>Пример:</strong> ${entry.example}`;
             entryDiv.appendChild(example);
 
@@ -60,15 +79,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 entryDiv.appendChild(marker);
             }
 
-            // Маркер (период)
+            // Маркер (период) - теперь он больше для информации, т.к. есть заголовки
             if (entry.period) {
                 const periodMarker = document.createElement('span');
-                // Добавляем класс для стилизации периода
                 periodMarker.classList.add('period-marker');
-                periodMarker.textContent = entry.period === 'старое' ? 'Устоявшееся' : (entry.period === 'среднее' ? 'XX век' : 'Современное');
+                periodMarker.textContent = periodHeadings[entry.period] || entry.period; // Используем полные названия
+                // Можно скрыть, если заголовков достаточно: periodMarker.style.display = 'none';
                 entryDiv.appendChild(periodMarker);
             }
-
 
             dictionaryContainer.appendChild(entryDiv);
         });
@@ -78,24 +96,18 @@ document.addEventListener('DOMContentLoaded', () => {
     function filterDictionary() {
         const searchTerm = searchInput.value.toLowerCase().trim();
 
-        // Если оригинальные данные еще не загружены, ничего не делаем
-        if (dictionaryData.length === 0) return;
-
-        const filteredData = dictionaryData.filter(entry => {
+        // Фильтруем ВСЕГДА из оригинального, отсортированного массива данных
+        currentFilteredData = dictionaryData.filter(entry => {
             // Ищем совпадение в русском термине, английском или определении
             return entry.term_ru.toLowerCase().includes(searchTerm) ||
                    entry.term_en.toLowerCase().includes(searchTerm) ||
                    entry.definition.toLowerCase().includes(searchTerm);
         });
-        renderDictionary(filteredData); // Отображаем отфильтрованные данные
+        renderDictionary(currentFilteredData); // Отображаем отфильтрованные данные
     }
 
 
-// === СТАРЫЕ / РАННИЕ ЗАИМСТВОВАНИЯ (до ~середины XX в.) ===
-// === СРЕДНИЕ ЗАИМСТВОВАНИЯ (примерно середина XX в. - 1990-е) ===
-// === НОВЫЕ / СОВРЕМЕННЫЕ (1990-е - наши дни) ===
-
-    // --- Загрузка данных из JSON и первоначальный рендеринг ---
+    // --- Загрузка данных из JSON, СОРТИРОВКА и первоначальный рендеринг ---
     fetch('dictionary.json')
         .then(response => {
             if (!response.ok) {
@@ -104,18 +116,40 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(data => {
-            dictionaryData = data; // Сохраняем загруженные данные
+            // --- СОРТИРОВКА ДАННЫХ ---
+            const periodOrder = ["старое", "среднее", "новое"]; // Задаем порядок периодов
+
+            data.sort((a, b) => {
+                // Определяем индексы периодов для сортировки
+                // Если период не указан, отправляем его в конец
+                const periodIndexA = a.period ? periodOrder.indexOf(a.period) : periodOrder.length;
+                const periodIndexB = b.period ? periodOrder.indexOf(b.period) : periodOrder.length;
+
+                // Сравниваем по периоду
+                const periodDifference = periodIndexA - periodIndexB;
+
+                if (periodDifference !== 0) {
+                    return periodDifference; // Если периоды разные, сортируем по ним
+                } else {
+                    // Если периоды одинаковые, сортируем по алфавиту (русский термин)
+                    // Используем localeCompare для правильной сортировки кириллицы
+                    return a.term_ru.localeCompare(b.term_ru, 'ru'); // 'ru' для русской локали
+                }
+            });
+            // --- Конец сортировки ---
+
+            dictionaryData = data; // Сохраняем отсортированные данные как основные
+            currentFilteredData = dictionaryData; // Изначально показываем всё
             if(loadingMessage) loadingMessage.remove(); // Удаляем сообщение о загрузке
-            renderDictionary(dictionaryData); // Отображаем полный словарь
+            renderDictionary(currentFilteredData); // Отображаем ПОЛНЫЙ ОТСОРТИРОВАННЫЙ словарь
         })
         .catch(error => {
-            console.error('Ошибка загрузки словаря:', error);
+            console.error('Ошибка загрузки или сортировки словаря:', error);
             if(loadingMessage) loadingMessage.remove();
             dictionaryContainer.innerHTML = '<p class="loading-message error">Не удалось загрузить словарь. Пожалуйста, проверьте консоль.</p>';
         });
+
     // --- Добавление обработчика событий для поля поиска ---
-	
-	
     searchInput.addEventListener('input', filterDictionary);
 
 }); // Конец DOMContentLoaded
