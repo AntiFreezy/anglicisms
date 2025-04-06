@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Словарь Англицизмов</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Подключаем скрипт с defer, чтобы он выполнился после загрузки HTML -->
+    <script src="script.js" defer></script>
+</head>
+<body>
+
+    <header>
+        <h1>Словарь Англицизмов</h1>
+        <p>Найдите значения, написание и произношение популярных заимствований из английского языка.</p>
+        <div class="search-container">
+             <input type="text" id="searchInput" placeholder="Введите слово для поиска...">
+        </div>
+    </header>
+
+    <main id="dictionaryContainer">
+        <!-- Словарные статьи будут сгенерированы здесь с помощью JavaScript -->
+        <p class="loading-message">Загрузка словаря...</p>
+    </main>
+
+    <footer>
+        <p>Проект [Ваше ФИО], [Год]</p>
+    </footer>
+
+</body>
+</html>
