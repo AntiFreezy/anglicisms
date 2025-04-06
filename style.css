@@ -154,6 +154,37 @@ footer {
     color: #777;
 }
 
+/* Стили для заголовков периодов */
+.period-heading {
+    font-size: 1.6rem; /* Крупнее основного текста */
+    font-weight: 600;
+    color: #3a5a78; /* Синий цвет, как у хедера */
+    margin-top: 2.5rem; /* Больший отступ сверху */
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #a9c1d8; /* Светло-синяя линия */
+    text-transform: uppercase; /* Заглавные буквы */
+    letter-spacing: 1px; /* Небольшое разрежение букв */
+}
+
+/* Уменьшаем верхний отступ для самого первого заголовка */
+main > .period-heading:first-of-type {
+    margin-top: 0;
+}
+
+/* Изменяем размер термина внутри блока, чтобы заголовок периода был главнее */
+.entry .term-ru {
+    font-size: 1.5rem; /* Немного уменьшили */
+    margin: 0 0 0.3rem 0;
+}
+
+/* Стилизуем маркер периода внутри карточки (можно скрыть, если мешает) */
+.entry .period-marker {
+    background-color: #f0f0f0; /* Сделать его менее заметным */
+    color: #666;
+    /* display: none; */ /* Раскомментировать, если хотите скрыть маркеры внутри карточек */
+}
+
 /* Адаптивность */
 @media (max-width: 768px) {
     header h1 {
