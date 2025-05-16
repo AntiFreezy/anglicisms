@@ -1,31 +1,39 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Словарь Англицизмов</title>
-    <link rel="stylesheet" href="style.css">
-    <!-- Подключаем скрипт с defer, чтобы он выполнился после загрузки HTML -->
-    <script src="script.js" defer></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Словарь Англицизмов</title>
+	<link rel="stylesheet" href="file/style.css">
+	<script src="file/fuse.js" defer></script>
+	<script src="file/script.js" defer></script>
 </head>
 <body>
 
-    <header>
-        <h1>Словарь Англицизмов</h1>
-        <p>Найдите значения, написание и произношение популярных заимствований из английского языка.</p>
-        <div class="search-container">
-             <input type="text" id="searchInput" placeholder="Введите слово для поиска...">
-        </div>
-    </header>
+	<header>
+		<h1>Словарь Англицизмов</h1>
+		<p>Найдите значения, написание и произношение популярных заимствований из английского языка.</p>
+		<div class="search-container">
+			 <input type="text" id="searchInput" placeholder="Введите слово для поиска...">
+			 <span id="clearSearchBtn" class="clear-search-btn" style="display: none;">×</span>
+		</div>
+	</header>
 
-    <main id="dictionaryContainer">
-        <!-- Словарные статьи будут сгенерированы здесь с помощью JavaScript -->
-        <p class="loading-message">Загрузка словаря...</p>
-    </main>
+	<div class="filters-container">
+		<label for="markerFilter">Фильтр по сфере: </label>
+		<select id="markerFilter">
+			<option value="">Все сферы</option>
+		</select>
+	</div>
 
-    <footer>
-        <p>Проект AntiFreez, 2025</p>
-    </footer>
+	<main id="dictionaryContainer">
+		<p class="loading-message">Загрузка словаря...</p>
+	</main>
+
+	<footer>
+		<p>Проект AntiFreez, 2025</p>
+	</footer>
+	<button id="scrollToTopBtn" title="Наверх" style="display: none;">↑</button>
 
 </body>
 </html>

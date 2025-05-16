@@ -1,209 +1,315 @@
 /* Основные стили */
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-    background-color: #f4f4f4;
-    color: #333;
+	font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+	line-height: 1.6;
+	margin: 0;
+	padding: 0;
+	background-color: #f4f4f4;
+	color: #333;
 }
 
 header {
-    background-color: #3a5a78; /* Синий цвет */
-    color: #fff;
-    padding: 1.5rem 1rem;
-    text-align: center;
-    border-bottom: 4px solid #2c4a63; /* Темнее синий */
+	background-color: #3a5a78;
+	color: #fff;
+	padding: 1.5rem 1rem;
+	text-align: center;
+	border-bottom: 4px solid #2c4a63; 
+	/*position: sticky;*/ /* Для "липкой" шапки */
+	top: 0;
+	z-index: 1000;
+	width: 100%;
+	box-sizing: border-box;
+	/*transition: top 0.3s ease-in-out;*/ /* Для анимации скрытия/показа */
 }
 
+/* Класс для скрытия шапки (если будете использовать JS для этого) */
+header.header-hidden {
+	top: -250px; /* Примерное значение, должно быть больше высоты шапки */
+}
+
+
 header h1 {
-    margin: 0 0 0.5rem 0;
-    font-size: 2.2rem;
+	margin: 0 0 0.5rem 0;
+	font-size: 2.2rem;
 }
 
 header p {
-    margin-bottom: 1.5rem;
-    font-size: 1.1rem;
+	margin-bottom: 1.5rem;
+	font-size: 1.1rem;
 }
 
 .search-container {
-    max-width: 600px;
-    margin: 0 auto;
+	max-width: 600px;
+	margin: 0 auto;
+	position: relative;
 }
 
 #searchInput {
-    width: 100%;
-    padding: 0.8rem 1rem;
-    font-size: 1.1rem;
-    border: 1px solid #ccc;
-    border-radius: 25px; /* Округлые края */
-    box-sizing: border-box; /* Учитывать padding и border в ширине */
-    outline: none; /* Убрать обводку при фокусе */
-    transition: border-color 0.3s ease;
+	width: 100%;
+	padding: 0.8rem 1rem;
+	padding-right: 2.8rem;
+	font-size: 1.1rem;
+	border: 1px solid #ccc;
+	border-radius: 25px; 
+	box-sizing: border-box; 
+	outline: none; 
+	transition: border-color 0.3s ease;
 }
 
 #searchInput:focus {
-    border-color: #a9c1d8; /* Светлее синий при фокусе */
+	border-color: #a9c1d8; 
 }
+
+.clear-search-btn {
+	position: absolute;
+	top: 50%;
+	right: 0.8rem;
+	transform: translateY(-50%);
+	font-size: 1.6rem;
+	color: #aaa;
+	cursor: pointer;
+	user-select: none; 
+	transition: color 0.2s ease;
+	line-height: 1;
+}
+
+.clear-search-btn:hover {
+	color: #333;
+}
+
+.filters-container {
+	max-width: 900px;
+	margin: 1rem auto 0 auto;
+	padding: 0.5rem 1rem;
+	text-align: right; 
+	background-color: #fff;
+	border-radius: 8px 8px 0 0;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+#markerFilter {
+	padding: 0.6rem 0.8rem;
+	font-size: 0.95rem;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	background-color: #fff;
+	min-width: 200px;
+}
+
 
 main {
-    max-width: 900px;
-    margin: 2rem auto;
-    padding: 1rem;
-    background-color: #fff;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
+	max-width: 900px;
+	margin: 0 auto 2rem auto;
+	padding: 1rem;
+	background-color: #fff;
+	box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+	border-radius: 0 0 8px 8px;
 }
 
+
 .loading-message {
-    text-align: center;
-    font-style: italic;
-    color: #777;
+	text-align: center;
+	font-style: italic;
+	color: #777;
+	padding: 2rem 0;
+}
+.loading-message.error {
+	color: #d9534f;
+	font-weight: bold;
 }
 
 /* Стили для словарной статьи */
 .entry {
-    border: 1px solid #e0e0e0;
-    background-color: #ffffff;
-    padding: 1.5rem;
-    margin-bottom: 1.5rem;
-    border-radius: 8px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-    transition: box-shadow 0.3s ease;
+	border: 1px solid #e0e0e0;
+	background-color: #ffffff;
+	padding: 1.5rem;
+	margin-bottom: 1.5rem;
+	border-radius: 8px;
+	box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+	transition: box-shadow 0.3s ease;
 }
 
 .entry:hover {
-     box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+	 box-shadow: 0 4px 8px rgba(0,0,0,0.08);
 }
 
 .term-ru {
-    font-size: 1.8rem;
-    font-weight: 600;
-    color: #2c4a63; /* Темно-синий */
-    margin: 0 0 0.3rem 0;
+	font-size: 1.5rem;
+	font-weight: 600;
+	color: #2c4a63; 
+	margin: 0 0 0.3rem 0;
 }
 
 .term-en {
-    font-style: italic;
-    color: #555;
-    margin-right: 1rem;
-    font-size: 0.95rem;
+	font-style: italic;
+	color: #555;
+	margin-right: 1rem;
+	font-size: 0.95rem;
 }
 
 .pronunciation {
-    color: #777;
-    font-size: 0.95rem;
-    margin-right: 1rem; /* Отступ справа */
+	color: #777;
+	font-size: 0.95rem;
+	margin-right: 1rem; 
 }
 
 .definition {
-    margin: 0.8rem 0;
+	margin: 0.8rem 0;
 }
 
 .definition strong {
-    font-weight: 600;
-    color: #444;
+	font-weight: 600;
+	color: #444;
 }
 
 .example {
-    font-style: italic;
-    color: #666;
-    margin: 0.5rem 0;
-    padding-left: 1rem;
-    border-left: 3px solid #a9c1d8; /* Светло-синяя полоска слева */
+	font-style: italic;
+	color: #666;
+	margin: 0.5rem 0;
+	padding-left: 1rem;
+	border-left: 3px solid #a9c1d8; 
 }
 
 .example strong {
-    font-style: normal;
+	font-style: normal;
 }
 
 .marker {
-    display: inline-block;
-    background-color: #e7f0f7; /* Очень светло-синий */
-    color: #3a5a78; /* Синий */
-    padding: 0.2rem 0.6rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    margin-top: 0.5rem;
-    font-weight: 500;
+	display: inline-block;
+	background-color: #e7f0f7; 
+	color: #3a5a78; 
+	padding: 0.2rem 0.6rem;
+	border-radius: 12px;
+	font-size: 0.85rem;
+	margin-top: 0.5rem;
+	font-weight: 500;
+	margin-right: 0.5rem;
 }
 
 .period-marker {
-     display: inline-block;
-     background-color: #f0e7f7; /* Светло-фиолетовый */
-     color: #5c3a78; /* Фиолетовый */
-     padding: 0.2rem 0.6rem;
-     border-radius: 12px;
-     font-size: 0.85rem;
-     margin-top: 0.5rem;
-     margin-left: 0.5rem; /* Отступ от основного маркера */
-     font-weight: 500;
+	 background-color: #f0f0f0;
+	 color: #666;
+	 display: inline-block;
+	 padding: 0.2rem 0.6rem;
+	 border-radius: 12px;
+	 font-size: 0.85rem;
+	 margin-top: 0.5rem;
+	 margin-left: 0.5rem;
+	 font-weight: 500;
 }
 
-/* Скрытие элементов, не соответствующих поиску */
-.entry.hidden {
-    display: none;
+/* Подсветка совпадений */
+.highlight {
+	background-color: #ffe082;
+	/* font-weight: bold; убрал, может быть слишком навязчиво */
+	padding: 0.1em 0;
+	border-radius: 3px;
 }
 
 
 footer {
-    text-align: center;
-    margin-top: 2rem;
-    padding: 1rem;
-    font-size: 0.9rem;
-    color: #777;
+	text-align: center;
+	margin-top: 2rem;
+	padding: 1rem;
+	font-size: 0.9rem;
+	color: #777;
 }
 
 /* Стили для заголовков периодов */
 .period-heading {
-    font-size: 1.6rem; /* Крупнее основного текста */
-    font-weight: 600;
-    color: #3a5a78; /* Синий цвет, как у хедера */
-    margin-top: 2.5rem; /* Больший отступ сверху */
-    margin-bottom: 1rem;
-    padding-bottom: 0.5rem;
-    border-bottom: 2px solid #a9c1d8; /* Светло-синяя линия */
-    text-transform: uppercase; /* Заглавные буквы */
-    letter-spacing: 1px; /* Небольшое разрежение букв */
+	font-size: 1.6rem; 
+	font-weight: 600;
+	color: #3a5a78; 
+	margin-top: 2.5rem; 
+	margin-bottom: 1rem;
+	padding-bottom: 0.5rem;
+	border-bottom: 2px solid #a9c1d8; 
+	text-transform: uppercase; 
+	letter-spacing: 1px; 
 }
 
-/* Уменьшаем верхний отступ для самого первого заголовка */
 main > .period-heading:first-of-type {
-    margin-top: 0;
+	margin-top: 0;
 }
 
-/* Изменяем размер термина внутри блока, чтобы заголовок периода был главнее */
-.entry .term-ru {
-    font-size: 1.5rem; /* Немного уменьшили */
-    margin: 0 0 0.3rem 0;
+/* Кнопка "Наверх" */
+#scrollToTopBtn {
+	position: fixed;
+	bottom: 20px;
+	right: 20px;
+	z-index: 999;
+	border: none;
+	outline: none;
+	background-color: #3a5a78;
+	color: white;
+	cursor: pointer;
+	width: 48px; 
+	height: 48px;
+	border-radius: 50%;
+	font-size: 20px; 
+	line-height: 48px;
+	text-align: center;
+	padding: 0; 
+
+	box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+	transition: opacity 0.3s, visibility 0.3s, background-color 0.3s;
 }
 
-/* Стилизуем маркер периода внутри карточки (можно скрыть, если мешает) */
-.entry .period-marker {
-    background-color: #f0f0f0; /* Сделать его менее заметным */
-    color: #666;
-    /* display: none; */ /* Раскомментировать, если хотите скрыть маркеры внутри карточек */
+#scrollToTopBtn:hover {
+	background-color: #2c4a63;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    header h1 {
-        font-size: 1.8rem;
-    }
-    header p {
-        font-size: 1rem;
-    }
-    #searchInput {
-        font-size: 1rem;
-    }
-    main {
-        margin: 1rem;
-        padding: 0.5rem;
-    }
-    .entry {
-        padding: 1rem;
-    }
-    .term-ru {
-        font-size: 1.5rem;
-    }
+	header {
+		padding: 1rem;
+	}
+	header h1 {
+		font-size: 1.8rem;
+	}
+	header p {
+		font-size: 0.95rem;
+		margin-bottom: 1rem;
+	}
+	#searchInput {
+		font-size: 1rem;
+		padding-right: 2.5rem; 
+	}
+	.clear-search-btn {
+		font-size: 1.4rem;
+		right: 0.7rem;
+	}
+
+	.filters-container {
+		text-align: left;
+		margin: 0.5rem auto;
+	}
+	#markerFilter {
+		width: 100%;
+		margin-top: 0.5rem;
+	}
+
+	main {
+		margin: 0 auto 1rem auto;
+		padding: 0.5rem;
+		border-radius: 8px;
+	}
+	.entry {
+		padding: 1rem;
+	}
+	.term-ru {
+		font-size: 1.3rem;
+	}
+	.period-heading {
+		font-size: 1.3rem;
+		margin-top: 2rem;
+	}
+	#scrollToTopBtn {
+		width: 40px;
+		height: 40px;
+		font-size: 18px;
+		line-height: 40px;
+		bottom: 15px;
+		right: 15px;
+	}
 }
