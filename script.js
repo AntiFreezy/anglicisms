@@ -219,7 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	// Загрузка данных из JSON
-	fetch('file/dictionary.json')
+	fetch('dictionary.json')
 		.then(response => {
 			if (!response.ok) {
 				throw new Error(`HTTP error! status: ${response.status}`);
